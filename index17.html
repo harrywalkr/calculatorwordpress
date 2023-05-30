@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Cryptocurrency Converter</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.4.3/dist/css/bootstrap.min.css">
+  <style>
+  
+  
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  #crypto-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    background-color: #1addcd26;
+    border: 5px solid #3f4a4b;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+.crypto-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #3f4a4b;
+  border-radius: 100px;
+  padding: 10px;
+  width: 400px;
+  height: 100px;
+  margin-bottom: 20px;
+  transition: all 0.2s ease-in-out;
+  background-color: #f1f1f1;
+}
+
+.crypto-box:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.crypto-box input {
+  font-size: 16px;
+  padding: 5px;
+  margin-right: 10px;
+  width: 60%;
+  border: none;
+  border-bottom: 2px solid #db4a4a;
+}
+
+.crypto-box input:focus {
+  outline: none;
+  border-bottom: 2px solid #0F52BA;
+}
+
+.crypto-box button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0F52BA;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.crypto-box button:hover {
+  background-color: #fff;
+  color: #0F52BA;
+}
+
+
+
+
+
+
+
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 500px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form input[type="text"],
+.form input[type="number"] {
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.form button {
+  border: none;
+  background-color: #3f51b5;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.form button:hover {
+  background-color: #2c387e;
+}
+
+.swap-icon {
+  font-size: 40px;
+  margin: 20px;
+  cursor: pointer;
+  animation: rotate 1s ease-in-out infinite;
+}
+
+.swap-icon:hover {
+  animation-play-state: paused;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.symbol-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
+}
+
+.symbol-container select {
+  appearance: none;
+  width: 80px;
+  height: 100%;
+  margin-right: 10px;
+  padding: 0 10px;
+  border: none;
+  background-color: transparent;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.symbol-container select option {
+  color: #333;
+  background-color: #fff;
+}
+
+.symbol-container input {
+  flex: 1;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  background-color: transparent;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+select {
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #F2F2F2;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select:hover {
+  cursor: pointer;
+  background-color: #E2E2E2;
+}
+
+select:focus {
+  box-shadow: 0 0 0 2px #0074D9;
+}
+
+select option {
+  font-size: 1rem;
+  padding: 0.5rem;
+  background-color: #F2F2F2;
+  color: #333333;
+  transition: all 0.3s ease;
+}
+
+select option:hover {
+  background-color: #0074D9;
+  color: #FFFFFF;
+}
+
+select option:checked {
+  background-color: #0074D9;
+  color: #FFFFFF;
+}
+
+
+
+
+
+
+
+
+
+.crypto-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: #b63131;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.crypto-icon:hover {
+  transform: rotate(90deg);
+}
+.crypto-box:first-child {
+  margin-bottom: -5px;
+}
+
+
+
+
+.result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  position: relative; /* Added */
+}
+
+.result-container input[type="text"] {
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 30px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.078);
+  color: rgb(8, 1, 1);
+  width: 300px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  animation: glow 2s ease-in-out infinite alternate;
+  text-align: center; /* Added */
+}
+
+.result-container:before { /* Added */
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  border: 2px solid rgba(43, 200, 187, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.result-container.show:before { /* Added */
+  opacity: 1;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.158), 0 0 40px rgba(0, 255, 255, 0.203), 0 0 60px rgba(0, 255, 255, 0.235);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+  </style>
+</head>
+<body>
+  <h1>Cryptocurrency Converter</h1>
+  <form id="crypto-container">
+    <div class="crypto-box">
+      <input type="text" id="received-token-search" name="received-token-search" placeholder="Enter symbol or name" list="received-token-list" class="form-control">
+      <datalist id="received-token-list">
+        <option value="BTC">Bitcoin (بیت کوین)</option>
+        <option value="ETH">Ethereum (ایتریم)</option>
+        <option value="XRP">XRP (آر ایکس پی)</option>
+        <!-- Add more options for other tokens -->
+      </datalist>
+    </div>
+    <div class="crypto-icon">
+      <div class="swap-button" id="swap-button">&#8595;</div>
+    </div>
+    <div class="crypto-box">
+      <input type="text" id="paying-token-search" name="paying-token-search" placeholder="Enter symbol or name" list="paying-token-list" class="form-control">
+      <datalist id="paying-token-list">
+        <option value="USD">US Dollar (دلار آمریکا)</option>
+        <option value="EUR">Euro (یورو)</option>
+        <option value="JPY">Japanese Yen (ین ژاپنی)</option>
+        <!-- Add more options for other tokens -->
+      </datalist>
+      <input type="number" id="amount" name="amount" required class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Convert</button>
+  </form>
+
+  <div class="result-container">
+    <input type="text" id="result" readonly class="form-control">
+  </div>
+
+
+
+
+  
+
+  <script>
+    const form = document.getElementById("crypto-container");
+    const result = document.getElementById("result");
+    const url = "https://cors-anywhere.herokuapp.com/https://coincodex.com/api/coincodex/get_coin/";
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const amount = document.getElementById("amount").value;
+      const receivedToken = document.getElementById("received-token-search").value.toUpperCase();
+      const payingToken = document.getElementById("paying-token-search").value.toUpperCase();
+
+      fetch(`${url}${receivedToken}`)
+        .then(response => response.json())
+        .then(data => {
+          const price1 = data.last_price_usd;
+
+          fetch(`${url}${payingToken}`)
+            .then(response => response.json())
+            .then(data => {
+              const price2 = data.last_price_usd;
+
+              const convertedAmount = (amount / price1) * price2;
+
+              result.value = `${convertedAmount.toFixed(9)} ${payingToken}`;
+
+              // Show the result with a visual effect
+              result.parentElement.style.opacity = 1;
+            })
+            .catch(error => {
+              console.error("Error fetching paying token price:", error);
+              result.value = "An error occurred. Please try again later.";
+            });
+        })
+        .catch(error => {
+          console.error("Error fetching received token price:", error);
+          result.value = "An error occurred. Please try again later.";
+        });
+    });
+
+    const receivedTokenSearchInput = document.getElementById("received-token-search");
+    const receivedTokenInput = document.getElementById("received-token-search");
+
+    const payingTokenSearchInput = document.getElementById("paying-token-search");
+    const payingTokenInput = document.getElementById("paying-token-search");
+
+    const swapButton = document.getElementById("swap-button");
+
+    receivedTokenSearchInput.addEventListener("input", () => {
+      const selectedSymbol = receivedTokenSearchInput.value.toUpperCase();
+      const receivedTokenList = document.getElementById("received-token-list");
+
+      for (let i = 0; i < receivedTokenList.options.length; i++) {
+        const option = receivedTokenList.options[i];
+        if (option.value.toUpperCase() === selectedSymbol) {
+          receivedTokenSearchInput.value = option.value;
+          receivedTokenInput.value = option.value;
+          break;
+        }
+      }
+    });
+
+    payingTokenSearchInput.addEventListener("input", () => {
+      const selectedSymbol = payingTokenSearchInput.value.toUpperCase();
+      const payingTokenList = document.getElementById("paying-token-list");
+
+      for (let i = 0; i < payingTokenList.options.length; i++) {
+        const option = payingTokenList.options[i];
+        if (option.value.toUpperCase() === selectedSymbol) {
+          payingTokenSearchInput.value = option.value;
+          payingTokenInput.value = option.value;
+          break;
+        }
+      }
+    });
+
+    swapButton.addEventListener("click", () => {
+      const receivedTokenValue = receivedTokenInput.value;
+      const payingTokenValue = payingTokenInput.value;
+
+      receivedTokenInput.value = payingTokenValue;
+      receivedTokenSearchInput.value = payingTokenValue;
+
+      payingTokenInput.value = receivedTokenValue;
+      payingTokenSearchInput.value = receivedTokenValue;
+
+      // Swap the icons visually
+      swapButton.classList.toggle("rotate");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cryptocurrency Converter</title>
+    <style>
+
+
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+form {
+  margin-top: 30px;
+}
+
+.token-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  background-color: #f7f7f7;
+  overflow: hidden;
+}
+
+.token-container input[type="text"],
+.token-container input[type="number"] {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: #333;
+}
+
+.token-container input[type="text"] {
+  flex: 1;
+  margin-left: 10px;
+  background-color: #f7f7f7;
+}
+
+.token-container input[type="number"] {
+  width: 70px;
+  margin-right: 10px;
+  text-align: center;
+  background-color: #f7f7f7;
+}
+
+.token-container .amount-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #333;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-container button {
+  display: inline-block;
+  margin: 10px;
+  padding: 12px 30px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #45a049;
+}
+
+.result-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.result-container input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.swap-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.swap-icon:hover {
+  background-color: #45a049;
+}
+
+.parallax-bg {
+  position: relative;
+  height: 300px;
+  background-image: url("your-image.jpg");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.parallax-bg:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.parallax-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
+}
+
+.parallax-content h1 {
+  font-size: 32px;
+}
+
+.parallax-content p {
+  font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+  </head>
+  <body>
+    <h1>Cryptocurrency Converter</h1>
+    <form id="converter-form">
+      <div class="token-container">
+        <input type="text" id="received-token-search" name="received-token-search" placeholder="Enter symbol or name" list="received-token-list">
+        <datalist id="received-token-list">
+          <option value="BTC">Bitcoin (بیت کوین)</option>
+          <option value="ETH">Ethereum (ایتریم)</option>
+          <option value="XRP">XRP (آر ایکس پی)</option>
+          <!-- Add more options for other tokens -->
+        </datalist>
+      </div>
+      <div class="swap-container">
+        <div class="swap-button" id="swap-button">&#8595;</div>
+      </div>
+      <div class="token-container">
+        <input type="text" id="paying-token-search" name="paying-token-search" placeholder="Enter symbol or name" list="paying-token-list">
+        <datalist id="paying-token-list">
+          <option value="USD">US Dollar (دلار آمریکا)</option>
+          <option value="EUR">Euro (یورو)</option>
+          <option value="JPY">Japanese Yen (ین ژاپنی)</option>
+          <!-- Add more options for other tokens -->
+        </datalist>
+        <input type="number" id="amount" name="amount" required>
+      </div>
+
+      <button type="submit">Convert</button>
+    </form>
+
+    <div class="result-container">
+      <input type="text" id="result" readonly>
+    </div>
+
+    <script>
+      const form = document.getElementById("converter-form");
+      const result = document.getElementById("result");
+      const url = "https://cors-anywhere.herokuapp.com/https://coincodex.com/api/coincodex/get_coin/";
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const amount = document.getElementById("amount").value;
+        const receivedToken = document.getElementById("received-token-search").value.toUpperCase();
+        const payingToken = document.getElementById("paying-token-search").value.toUpperCase();
+
+        fetch(`${url}${receivedToken}`)
+          .then(response => response.json())
+          .then(data => {
+            const price1 = data.last_price_usd;
+
+            fetch(`${url}${payingToken}`)
+              .then(response => response.json())
+              .then(data => {
+                const price2 = data.last_price_usd;
+
+                const convertedAmount = (amount / price1) * price2;
+               
+                result.value = `${convertedAmount.toFixed(9)} ${payingToken}`;
+              })
+              .catch(error => {
+                console.error("Error fetching paying token price:", error);
+                result.value = "An error occurred. Please try again later.";
+              });
+          })
+          .catch(error => {
+            console.error("Error fetching received token price:", error);
+            result.value = "An error occurred. Please try again later.";
+          });
+      });
+
+      const receivedTokenSearchInput = document.getElementById("received-token-search");
+      const receivedTokenInput = document.getElementById("received-token-search");
+
+      const payingTokenSearchInput = document.getElementById("paying-token-search");
+      const payingTokenInput = document.getElementById("paying-token-search");
+
+      const swapButton = document.getElementById("swap-button");
+
+      receivedTokenSearchInput.addEventListener("input", () => {
+        const selectedSymbol = receivedTokenSearchInput.value.toUpperCase();
+        const receivedTokenList = document.getElementById("received-token-list");
+
+        for (let i = 0; i < receivedTokenList.options.length; i++) {
+          const option = receivedTokenList.options[i];
+          if (option.value.toUpperCase() === selectedSymbol) {
+            receivedTokenSearchInput.value = option.value;
+            receivedTokenInput.value = option.value;
+            break;
+          }
+        }
+      });
+
+      payingTokenSearchInput.addEventListener("input", () => {
+        const selectedSymbol = payingTokenSearchInput.value.toUpperCase();
+        const payingTokenList = document.getElementById("paying-token-list");
+
+        for (let i = 0; i < payingTokenList.options.length; i++) {
+          const option = payingTokenList.options[i];
+          if (option.value.toUpperCase() === selectedSymbol) {
+            payingTokenSearchInput.value = option.value;
+            payingTokenInput.value = option.value;
+            break;
+          }
+        }
+      });
+
+      swapButton.addEventListener("click", () => {
+        const receivedTokenValue = receivedTokenInput.value;
+        const receivedTokenSearchValue = receivedTokenSearchInput.value;
+        const payingTokenValue = payingTokenInput.value;
+        const payingTokenSearchValue = payingTokenSearchInput.value;
+
+        receivedTokenInput.value = payingTokenValue;
+        receivedTokenSearchInput.value = payingTokenSearchValue;
+        payingTokenInput.value = receivedTokenValue;
+        payingTokenSearchInput.value = receivedTokenSearchValue;
+      });
+    </script>
+  </body>
+</html>

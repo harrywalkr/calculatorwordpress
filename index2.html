@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cryptocurrency Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      input[type="number"] {
+        width: 300px;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      select {
+        width: 300px;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Cryptocurrency Converter</h1>
+    <form id="converter-form">
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" name="amount" required>
+
+      <label for="received-token">Received Token:</label>
+      <select id="received-token" name="received-token" required>
+        <option value="">Select Token</option>
+        <option value="btc">Bitcoin (BTC)</option>
+        <option value="eth">Ethereum (ETH)</option>
+        <option value="xrp">XRP (XRP)</option>
+      </select>
+
+      <label for="paying-token">Paying Token:</label>
+      <select id="paying-token" name="paying-token" required>
+        <option value="">Select Token</option>
+        <option value="usd">US Dollar (USD)</option>
+        <option value="eur">Euro (EUR)</option>
+        <option value="jpy">Japanese Yen (JPY)</option>
+      </select>
+
+      <button type="submit">Convert</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        
+      const form = document.getElementById("converter-form");
+      const result = document.getElementById("result");
+      const url = "https://cors-anywhere.herokuapp.com/https://coincodex.com/api/coincodex/get_coin/";
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const amount = document.getElementById("amount").value;
+        const receivedToken = document.getElementById("received-token").value;
+        const payingToken = document.getElementById("paying-token").value;
+
+        fetch(`${url}${receivedToken}`)
+          .then(response => response.json())
+          .then(data => {
+            const price1 = data.last_price_usd;
+
+            fetch(`${url}${payingToken}`)
+              .then(response => response.json())
+              .then(data => {
+                const price2 = data.last_price_usd;
+
+                const convertedAmount = (amount / price1) * price2;
+               
+                result.innerHTML = `You would get ${convertedAmount.toFixed(2)} ${payingToken.toUpperCase()}`;
+              })
+              .catch(error => {
+                console.error("Error fetching paying token price:", error);
+                result.innerHTML = "An error occurred. Please try again later.";
+              });
+          })
+          .catch(error => {
+            console.error("Error fetching received token price:", error);
+            result.innerHTML = "An error occurred. Please try again later.";
+          });
+      });
+    </script>
+  </body>
+</html>

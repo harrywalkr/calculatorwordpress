@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Token Logo Viewer</title>
+
+</head>
+<body>
+  <h1>Token Logo Viewer</h1>
+  <label for="symbol">Enter token symbol:</label>
+  <input type="text" id="symbol" placeholder="e.g., btc">
+
+  <button onclick="displayTokenLogo()">Show Logo</button>
+
+  <div id="logo"></div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    // JavaScript code
+    const displayTokenLogo = async () => {
+      const symbolInput = document.getElementById('symbol');
+      const symbol = symbolInput.value.trim().toLowerCase();
+
+      try {
+        const response = await axios.get(`https://cors-anywhere.herokuapp.com/https://coincodex.com/api/coincodex/get_coin/${symbol}`);
+        const imageId = response.data.image_id;
+        const imageUrl = `https://imagedelivery.net/4-5JC1r3VHAXpnrwWHBHRQ/${imageId}/coin64`;
+
+        const logoContainer = document.getElementById('logo');
+        logoContainer.innerHTML = `<img src="${imageUrl}" alt="${symbol} logo">`;
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+  </script>
+</body>
+</html>

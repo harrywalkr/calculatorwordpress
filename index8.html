@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cryptocurrency Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      .token-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .token-container input[type="text"],
+      .token-container input[type="number"] {
+        flex-grow: 1;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: 1px solid #ccc;
+      }
+      .swap-button {
+        margin: 0 10px;
+        padding: 5px;
+        font-size: 20px;
+        border: none;
+        border-radius: 50%;
+        background-color: #ccc;
+        color: white;
+        cursor: pointer;
+      }
+      select {
+        width: 300px;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+      #result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+      }
+
+      /* CSS modifications for symbol boxes */
+      #received-token-search,
+      #paying-token-search {
+        width: 300px;
+        padding: 10px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: 1px solid #ccc;
+      }
+      #amount {
+        width: 200px;
+        padding: 10px;
+        margin-right: 10px;
+        font-size: 16px;
+        border-radius: 30px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cryptocurrency Converter</h1>
+    <form id="converter-form">
+      <div class="token-container">
+        <input type="text" id="received-token-search" name="received-token-search" placeholder="Enter symbol or name" list="received-token-list">
+        <datalist id="received-token-list">
+          <option value="BTC">Bitcoin (بیت کوین)</option>
+          <option value="ETH">Ethereum (ایتریم)</option>
+          <option value="XRP">XRP (آر ایکس پی)</option>
+          <!-- Add more options for other tokens -->
+        </datalist>
+      </div>
+      <div class="token-container">
+        <input type="text" id="paying-token-search" name="paying-token-search" placeholder="Enter symbol or name" list="paying-token-list">
+        <datalist id="paying-token-list">
+          <option value="USD">US Dollar (دلار آمریکا)</option>
+          <option value="EUR">Euro (یورو)</option>
+          <option value="JPY">Japanese Yen (ین ژاپنی)</option>
+          <!-- Add more options for other tokens -->
+        </datalist>
+      </div>
+      <div class="token-container">
+        <input type="number" id="amount" name="amount" required>
+        <div class="swap-button" id="swap-button">&#8646;</div>
+      </div>
+
+      <button type="submit">Convert</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        
+      const form = document.getElementById("converter-form");
+      const result = document.getElementById("result");
+      const url = "https://cors-anywhere.herokuapp.com/https://coincodex.com/api/coincodex/get_coin/";
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const amount = document.getElementById("amount").value;
+        const receivedToken = document.getElementById("received-token-search").value.toUpperCase();
+        const payingToken = document.getElementById("paying-token-search").value.toUpperCase();
+
+        fetch(`${url}${receivedToken}`)
+          .then(response => response.json())
+          .then(data => {
+            const price1 = data.last_price_usd;
+
+            fetch(`${url}${payingToken}`)
+              .then(response => response.json())
+              .then(data => {
+                const price2 = data.last_price_usd;
+
+                const convertedAmount = (amount / price1) * price2;
+               
+                result.innerHTML = `You would get ${convertedAmount.toFixed(2)} ${payingToken.toUpperCase()}`;
+              })
+              .catch(error => {
+                console.error("Error fetching paying token price:", error);
+                result.innerHTML = "An error occurred. Please try again later.";
+              });
+          })
+          .catch(error => {
+            console.error("Error fetching received token price:", error);
+            result.innerHTML = "An error occurred. Please try again later.";
+          });
+      });
+
+      const receivedTokenSearchInput = document.getElementById("received-token-search");
+      const receivedTokenInput = document.getElementById("received-token-search");
+
+      const payingTokenSearchInput = document.getElementById("paying-token-search");
+      const payingTokenInput = document.getElementById("paying-token-search");
+
+      const swapButton = document.getElementById("swap-button");
+
+      receivedTokenSearchInput.addEventListener("input", () => {
+        const selectedSymbol = receivedTokenSearchInput.value.toUpperCase();
+        const receivedTokenList = document.getElementById("received-token-list");
+
+        for (let i = 0; i < receivedTokenList.options.length; i++) {
+          const option = receivedTokenList.options[i];
+          if (option.value.toUpperCase() === selectedSymbol) {
+            receivedTokenSearchInput.value = option.value;
+            receivedTokenInput.value = option.value;
+            break;
+          }
+        }
+      });
+
+      payingTokenSearchInput.addEventListener("input", () => {
+        const selectedSymbol = payingTokenSearchInput.value.toUpperCase();
+        const payingTokenList = document.getElementById("paying-token-list");
+
+        for (let i = 0; i < payingTokenList.options.length; i++) {
+          const option = payingTokenList.options[i];
+          if (option.value.toUpperCase() === selectedSymbol) {
+            payingTokenSearchInput.value = option.value;
+            payingTokenInput.value = option.value;
+            break;
+          }
+        }
+      });
+
+      swapButton.addEventListener("click", () => {
+        const temp = receivedTokenSearchInput.value;
+        receivedTokenSearchInput.value = payingTokenSearchInput.value;
+        payingTokenSearchInput.value = temp;
+      });
+    </script>
+  </body>
+</html>

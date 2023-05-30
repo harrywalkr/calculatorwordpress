@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Crypto Converter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Crypto Converter</h1>
+    <form>
+      <div class="form-group">
+        <label for="amount">Enter amount:</label>
+        <input type="number" id="amount" name="amount" required>
+      </div>
+      <div class="form-group">
+        <label for="symbol1">Enter received token symbol:</label>
+        <input type="text" id="symbol1" name="symbol1" required>
+      </div>
+      <div class="form-group">
+        <label for="symbol2">Enter paying token symbol:</label>
+        <input type="text" id="symbol2" name="symbol2" required>
+      </div>
+      <button type="submit">Convert</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
